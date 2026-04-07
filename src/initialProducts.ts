@@ -7,9 +7,9 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
     name: " Tote Bag",
      image: "/images/products/tote bag crispy1.png",
 
-    remaining: 1,
+    remaining: 50,
     active: true,
-    probability: 0.2,
+    probability: 7.5,
   },
   {
     uniqueKey: "2",
@@ -21,7 +21,7 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
   },
   {
     uniqueKey: "3",
-    name: "produit mazra",
+    name: "Produit Mazraa",
     image: "/images/products/boulettes.png",
     remaining: 50,
     active: true,
@@ -65,9 +65,9 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
   {
     uniqueKey: "7",
     name: "Friteuse",
-    probability: 7.5,
+    probability: 0.2,
     image: "/images/products/Friteuse.png",
-    remaining: 75,
+    remaining: 1,
     active: true,
   },
   

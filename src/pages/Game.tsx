@@ -221,48 +221,31 @@ export function Game() {
                   onClick={handleSpin}
                   disabled={spinning || activeProducts.filter(p => p.remaining > 0).length === 0}
                   className="pointer-events-auto"
-                                style={{
-                  display: 'flex',
-                  width: 90,
-                  height: 90,
-                  borderRadius: '50%',
-                  backgroundColor: '#fff',
-                  border: '5px solid #2e7d32',
-                  boxShadow: '0 0 0 5px #e53935, 0 6px 15px rgba(0,0,0,0.3)',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  overflow: 'hidden',
-                }}
+                  style={{
+                    display: 'flex',
+                    width: 108,
+                    height: 108,
+                    borderRadius: '50%',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    padding: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                    cursor: spinning ? 'not-allowed' : 'pointer',
+                    opacity: spinning ? 0.75 : 1,
+                  }}
                 >
-                  <span
+                  <img
+                    src="/images/centre-roue-mazraa.png"
+                    alt="Spin"
                     style={{
-                      display: 'inline-block',
-                      width: 130,
-                      height: 130,
-                      position: 'relative',
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      pointerEvents: 'none',
                     }}
-                  >
-      
-                   
-                
-                    {/* Jadida logo perfectly centered */}
-                    <img
-                      src="/m.png"
-                      alt="Spin"
-                      style={{
-                        width: 130,
-                        height: 90,
-                        objectFit: 'contain',
-                        zIndex: 2,
-                        position: 'absolute',
-                        left: '50%',
-                        top: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        pointerEvents: 'none',
-                        opacity: spinning ? 0.5 : 1,
-                      }}
-                    />
-                  </span>
+                  />
                 </button>
               </div>
               {/* Wheel */}
