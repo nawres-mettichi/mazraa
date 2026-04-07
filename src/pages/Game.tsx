@@ -210,10 +210,10 @@ export function Game() {
         ) : (
           <div className="flex flex-col items-center justify-center w-full h-full">
             {/* Wheel Container */}
-            <div className="relative mb-15" style={{transform: 'translateX(-6vw)'}}>
+            <div className="relative mb-15" style={{transform: 'translateX(-10vw)'}}>
               {/* Pointer */}
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
-                <div className="w-0 h-0 border-l-30 border-r-30 border-t-50 border-l-transparent border-r-transparent border-black drop-shadow-xl animate-bounce"></div>
+                <div className="w-0 h-0 border-l-30 border-r-30 border-t-50 border-l-transparent border-r-transparent border-red-600 drop-shadow-xl animate-bounce"></div>
               </div>
               {/* Center Circle - Spin Button and Logo (fixed, above wheel) */}
               <div className="absolute left-1/2 top-1/2 z-30" style={{transform: 'translate(-50%, -50%)'}}>
@@ -242,22 +242,9 @@ export function Game() {
                       position: 'relative',
                     }}
                   >
-                   /*
-                   {/*{} Small background design */}
-                    <img
-                      src="/2.png"
-                      alt="Spin background"
-                      style={{
-                        width: 130,
-                        height: 130,
-                        objectFit: 'contain',
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        zIndex: 1,
-                        pointerEvents: 'none',
-                      }}
-                    />
+      
+                   
+                
                     {/* Jadida logo perfectly centered */}
                     <img
                       src="/m.png"
@@ -279,7 +266,7 @@ export function Game() {
                 </button>
               </div>
               {/* Wheel */}
-              <div className="relative w-170 h-170 md:w-160 md:h-160">
+              <div className="relative w-160 h-160 md:w-150 md:h-150">
                 {/* White outer border */}
                 <div className="absolute inset-0 rounded-full" style={{background: '#FFFFFF', padding: '0.75rem'}}>
                   {/* Green border (green-600) */}
@@ -322,7 +309,7 @@ export function Game() {
                     const isWhiteSegment = index % 2 === 0;
                     const textColor = isWhiteSegment ? '#16A34A' : '#FFFFFF';
                     // Responsive distance and size
-                    const wheelRadius = window.innerWidth >= 768 ? 300 : 200;
+                    const wheelRadius = window.innerWidth >= 768 ? 290 : 190;
                     const distanceFromCenter = wheelRadius * 0.3 ;
                     const productCount = activeProducts.length;
                     const imageSize = productCount > 6 ? 'w-24 h-24' : productCount > 4 ? 'w-12 h-12' : 'w-14 h-14';
