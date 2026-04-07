@@ -1,13 +1,13 @@
 {
   "id": "/",
-  "name": "Spin Wheel Game",
-  "short_name": "SpinWheel",
+  "name": "Mazaraa Roue",
+  "short_name": "Mazraa Roue",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "background_color": "#FF3B3B",
   "theme_color": "#FFD700",
-  "orientation": "any",
+  "orientation": "horizontal-primary",
   "icons": [
     {
       "src": "/icons/icon-192.png",
