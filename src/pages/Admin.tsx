@@ -145,7 +145,7 @@ export function Admin() {
                       100
                   ) < 0.01
                     ? "text-green-600 font-bold"
-                    : "text-red-600 font-bold"
+                    : "text-green-600 font-bold"
                 }
               >
                 {products
@@ -353,7 +353,7 @@ export function Admin() {
                 </button>
                 <button
                   onClick={handleClearLogs}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base lg:text-lg"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-sm md:text-base lg:text-lg"
                 >
                   🗑️ Clear History
                 </button>

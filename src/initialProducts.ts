@@ -4,24 +4,25 @@ import type { Product } from "./types";
 export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
   {
     uniqueKey: "1",
-    name: "Friteuse",
-    image: "/images/products/airfryer.png",
+    name: " Tote Bag",
+     image: "/images/products/tote bag crispy1.png",
+
     remaining: 1,
     active: true,
     probability: 0.2,
   },
   {
     uniqueKey: "2",
-    name: "Produits Jadida",
-    image: "/images/products/mayonnaise.jpg",
+    name: "Ustensiles  ",
+    image: "/images/products/cadeau.png",
     remaining: 50,
     active: true,
     probability: 40,
   },
   {
     uniqueKey: "3",
-    name: "Peole",
-    image: "/images/products/frying.png",
+    name: "produit mazra",
+    image: "/images/products/boulettes.png",
     remaining: 50,
     active: true,
     probability: 1,
@@ -29,7 +30,7 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
   {
     uniqueKey: "4",
     name: "Magnet",
-    image: "/images/products/MAGNET JADIDA1.png",
+    image: "/images/products/magnet mazraa2.png",
     remaining: 75,
     probability: 7.5,
     active: true,
@@ -39,21 +40,21 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
     uniqueKey: "5",
     probability: 2.80,
     name: "Tablier",
-    image: "/images/products/TABLIER_jadida.png",
+    image: "/images/products/TABLIER street  mazraa.png",
     remaining: 20,
     active: true,
   },
 
   {
     uniqueKey: "6",
-    name: "Pince Friteuse",
+    name: "Crousti'Max ",
     probability: 1,
-    image: "/images/products/pince.png",
+    image: "/images/products/crousti.png",
     remaining: 5,
     active: true,
   },
   {
-    uniqueKey: "7",
+    uniqueKey: "8",
     name: "A la Prochaine",
     probability: 40,
     image:
@@ -62,11 +63,12 @@ export const INITIAL_PRODUCTS: Omit<Product, "id">[] = [
     active: true,
   },
   {
-    uniqueKey: "8",
-    name: "Magnet",
-    image: "/images/products/MAGNET JADIDA3.png",
+    uniqueKey: "7",
+    name: "Friteuse",
     probability: 7.5,
+    image: "/images/products/Friteuse.png",
     remaining: 75,
     active: true,
   },
+  
 ];

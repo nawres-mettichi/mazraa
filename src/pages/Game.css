@@ -2,6 +2,7 @@
   min-height: 100vh;
   padding: 2rem;
   text-align: center;
+  background: #f8fff9;
 }
 
 .game-header {
@@ -13,23 +14,25 @@
 
 .admin-link {
   padding: 0.5rem 1rem;
-  background: #4CAF50;
+  background: #27ae60;
   color: white;
   text-decoration: none;
   border-radius: 4px;
 }
 
 .admin-link:hover {
-  background: #45a049;
+  background: #2ecc71;
 }
 
 .no-products {
   margin-top: 3rem;
   padding: 2rem;
-  background: #fff3cd;
+  background: #e8f8f0;
   border-radius: 8px;
+  color: #1e8449;
 }
 
+/* 🎯 ROUE */
 .wheel-container {
   position: relative;
   width: 400px;
@@ -41,16 +44,25 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 4px solid #333;
+  border: 4px solid #27ae60;
   position: relative;
   transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
-  background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+
+  /* 🎨 nouveau dégradé vert & blanc */
+  background: linear-gradient(
+    45deg,
+    #2ecc71,
+    #27ae60,
+    #ffffff,
+    #a9dfbf
+  );
 }
 
 .wheel.spinning {
   transform: rotate(1440deg);
 }
 
+/* 🎯 SEGMENTS */
 .wheel-segment {
   position: absolute;
   width: 50%;
@@ -81,10 +93,11 @@
 .segment-content span {
   font-size: 0.8rem;
   font-weight: bold;
-  color: white;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  color: #145a32;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
 }
 
+/* 🎯 FLÈCHE */
 .wheel-pointer {
   position: absolute;
   top: -20px;
@@ -94,15 +107,16 @@
   height: 0;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
-  border-top: 40px solid #ff4444;
+  border-top: 40px solid #27ae60;
   z-index: 10;
 }
 
+/* 🎯 BOUTON */
 .spin-button {
   padding: 1rem 3rem;
   font-size: 1.5rem;
   font-weight: bold;
-  background: #ff4444;
+  background: #27ae60;
   color: white;
   border: none;
   border-radius: 50px;
@@ -111,7 +125,7 @@
 }
 
 .spin-button:hover:not(:disabled) {
-  background: #ff6666;
+  background: #2ecc71;
   transform: scale(1.05);
 }
 
@@ -120,13 +134,14 @@
   cursor: not-allowed;
 }
 
+/* 🎯 MODAL GAGNANT */
 .winner-modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 50, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,10 +150,11 @@
 
 .winner-content {
   background: white;
-  padding: 5rem;
+  padding: 3rem;
   border-radius: 12px;
   text-align: center;
   max-width: 500px;
+  border: 3px solid #27ae60;
 }
 
 .winner-content img {
@@ -151,7 +167,7 @@
 .winner-content button {
   padding: 0.75rem 2rem;
   font-size: 1rem;
-  background: #4CAF50;
+  background: #27ae60;
   color: white;
   border: none;
   border-radius: 4px;
@@ -160,5 +176,5 @@
 }
 
 .winner-content button:hover {
-  background: #45a049;
+  background: #2ecc71;
 }

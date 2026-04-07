@@ -160,7 +160,7 @@ export function Game() {
     <div
       className="w-screen flex flex-col items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: "url('/jadida-background.png')",
+        backgroundImage: "url('/FOND-VERT.jpg')",
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
@@ -210,7 +210,7 @@ export function Game() {
         ) : (
           <div className="flex flex-col items-center justify-center w-full h-full">
             {/* Wheel Container */}
-            <div className="relative mb-15">
+            <div className="relative mb-15" style={{transform: 'translateX(-6vw)'}}>
               {/* Pointer */}
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
                 <div className="w-0 h-0 border-l-30 border-r-30 border-t-50 border-l-transparent border-r-transparent border-black drop-shadow-xl animate-bounce"></div>
@@ -221,18 +221,18 @@ export function Game() {
                   onClick={handleSpin}
                   disabled={spinning || activeProducts.filter(p => p.remaining > 0).length === 0}
                   className="pointer-events-auto"
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    padding: 0,
-                    cursor: spinning || activeProducts.filter(p => p.remaining > 0).length === 0 ? 'not-allowed' : 'pointer',
-                    opacity: spinning || activeProducts.filter(p => p.remaining > 0).length === 0 ? 0.6 : 1,
-                    outline: 'none',
-                    boxShadow: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                                style={{
+                  display: 'flex',
+                  width: 90,
+                  height: 90,
+                  borderRadius: '50%',
+                  backgroundColor: '#fff',
+                  border: '5px solid #2e7d32',
+                  boxShadow: '0 0 0 5px #e53935, 0 6px 15px rgba(0,0,0,0.3)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                }}
                 >
                   <span
                     style={{
@@ -242,7 +242,8 @@ export function Game() {
                       position: 'relative',
                     }}
                   >
-                    {/* Small background design */}
+                   /*
+                   {/*{} Small background design */}
                     <img
                       src="/2.png"
                       alt="Spin background"
@@ -259,11 +260,11 @@ export function Game() {
                     />
                     {/* Jadida logo perfectly centered */}
                     <img
-                      src="/jadida.png"
+                      src="/m.png"
                       alt="Spin"
                       style={{
-                        width: 100,
-                        height: 60,
+                        width: 130,
+                        height: 90,
                         objectFit: 'contain',
                         zIndex: 2,
                         position: 'absolute',
@@ -279,10 +280,10 @@ export function Game() {
               </div>
               {/* Wheel */}
               <div className="relative w-170 h-170 md:w-160 md:h-160">
-                {/* Yellow outer border */}
-                <div className="absolute inset-0 rounded-full" style={{background: '#FED029', padding: '0.75rem'}}>
-                  {/* Red border */}
-                  <div className="w-full h-full rounded-full" style={{background: '#EC2028', padding: '0.75rem'}}>
+                {/* White outer border */}
+                <div className="absolute inset-0 rounded-full" style={{background: '#FFFFFF', padding: '0.75rem'}}>
+                  {/* Green border (green-600) */}
+                  <div className="w-full h-full rounded-full" style={{background: '#16A34A', padding: '0.75rem'}}>
                     {/* White thin inner border */}
                     <div className="w-full h-full rounded-full bg-white p-0.5">
                       <div 
@@ -290,12 +291,12 @@ export function Game() {
                         style={{ 
                           transform: `rotate(${rotation}deg)`,
                           background: activeProducts.length > 0 ? `conic-gradient(from -112.5deg, ${activeProducts.map((_, i) => {
-                            const color = i % 2 === 0 ? '#FED029' : '#EC2028';
+                              const color = i % 2 === 0 ? '#FFFFFF' : '#16A34A';
                             const segmentAngle = 360 / activeProducts.length;
                             const startAngle = i * segmentAngle;
                             const endAngle = (i + 1) * segmentAngle;
                             return `${color} ${startAngle}deg, ${color} ${endAngle}deg`;
-                          }).join(', ')})` : '#FED029'
+                          }).join(', ')})` : '#FFFFFF'
                         }}
                       >
                         {/* White divider lines between segments */}
@@ -318,8 +319,8 @@ export function Game() {
                     const angle = (segmentAngle * index) - 112.5;
                     const isFinished = product.remaining === 0;
                     const isEmptySlot = product.name.startsWith('❌');
-                    const isYellowSegment = index % 2 === 0;
-                    const textColor = isYellowSegment ? '#EC2028' : '#FED029';
+                    const isWhiteSegment = index % 2 === 0;
+                    const textColor = isWhiteSegment ? '#16A34A' : '#FFFFFF';
                     // Responsive distance and size
                     const wheelRadius = window.innerWidth >= 768 ? 300 : 200;
                     const distanceFromCenter = wheelRadius * 0.3 ;
@@ -394,7 +395,7 @@ export function Game() {
       {/* Try Again Modal */}
       {showTryAgain && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-          <div className="bg-linear-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl p-8 md:p-12 max-w-lg w-full shadow-2xl transform animate-in zoom-in duration-500">
+          <div className="bg-linear-to-br from-green-600 via-green-600 to-white rounded-3xl p-8 md:p-12 max-w-lg w-full shadow-2xl transform animate-in zoom-in duration-500">
             <div className="text-center">
               <div className="text-7xl mb-4">😅</div>
               <h2 className="text-5xl font-extrabold text-white mb-4 drop-shadow-lg">
@@ -405,9 +406,9 @@ export function Game() {
               </p>
               <button 
                 onClick={() => setShowTryAgain(false)}
-                className="bg-white text-red-600 px-12 py-4 rounded-full font-bold text-xl hover:bg-red-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-white text-green-600 px-12 py-4 rounded-full font-bold text-xl hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
-                Next
+                suivante
               </button>
             </div>
           </div>
@@ -417,7 +418,7 @@ export function Game() {
       {/* Winner Modal */}
       {winner && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
-          <div className="bg-linear-to-br from-yellow-400 via-orange-400 to-red-400 rounded-3xl p-8 md:p-12 max-w-lg w-full shadow-2xl transform animate-in zoom-in duration-500 relative overflow-hidden">
+          <div className="bg-linear-to-br from-white via-green-400 to-green-600 rounded-3xl p-8 md:p-12 max-w-lg w-full shadow-2xl transform animate-in zoom-in duration-500 relative overflow-hidden">
             {/* Confetti Effect */}
             <div className="absolute inset-0 overflow-hidden">
               <div className="absolute top-0 left-1/4 w-2 h-2 bg-white rounded-full animate-ping"></div>
@@ -442,7 +443,7 @@ export function Game() {
               </h3>
               <button 
                 onClick={() => setWinner(null)}
-                className="bg-white text-orange-600 px-12 py-4 rounded-full font-bold text-xl hover:bg-orange-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="bg-white text-green-600 px-12 py-4 rounded-full font-bold text-xl hover:bg-green-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Claim Cadeau 
               </button>
