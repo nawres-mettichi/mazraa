@@ -160,7 +160,7 @@ export function Game() {
     <div
       className="w-screen flex flex-col items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: "url('/FOND-VERT.jpg')",
+        backgroundImage: "url('/FONDM.jpeg')",
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
@@ -210,7 +210,7 @@ export function Game() {
         ) : (
           <div className="flex flex-col items-center justify-center w-full h-full">
             {/* Wheel Container */}
-            <div className="relative mb-15" style={{transform: 'translateX(-10vw)'}}>
+            <div className="relative mb-15" style={{transform: 'translateX(-1vw)'}}>
               {/* Pointer */}
               <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-20">
                 <div className="w-0 h-0 border-l-30 border-r-30 border-t-50 border-l-transparent border-r-transparent border-red-600 drop-shadow-xl animate-bounce"></div>
