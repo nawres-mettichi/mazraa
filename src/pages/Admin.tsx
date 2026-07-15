@@ -9,13 +9,15 @@ export function Admin() {
   const [products, setProducts] = useState<Product[]>([]);
   const [logs, setLogs] = useState<SpinLog[]>([]);
   const [activeTab, setActiveTab] = useState<"products" | "logs">("products");
+  
+  // Changed types to allow empty string ("") so editing starts clean
   const [editingQuantity, setEditingQuantity] = useState<{
     id: number;
-    value: number;
+    value: number | "";
   } | null>(null);
   const [editingProbability, setEditingProbability] = useState<{
     id: number;
-    value: number;
+    value: number | "";
   } | null>(null);
 
   function handleExportLogsToExcel() {
@@ -47,16 +49,18 @@ export function Admin() {
     setLogs(allLogs);
   }
 
-  async function handleUpdateQuantity(id: number, newQuantity: number) {
-    if (newQuantity < 0) return;
-    await db.products.update(id, { remaining: newQuantity });
+  async function handleUpdateQuantity(id: number, newQuantity: number | "") {
+    const qty = newQuantity === "" ? 0 : newQuantity;
+    if (qty < 0) return;
+    await db.products.update(id, { remaining: qty });
     await loadProducts();
     setEditingQuantity(null);
   }
 
-  async function handleUpdateProbability(id: number, newProbability: number) {
-    if (newProbability < 0) return;
-    await db.products.update(id, { probability: newProbability });
+  async function handleUpdateProbability(id: number, newProbability: number | "") {
+    const prob = newProbability === "" ? 0 : newProbability;
+    if (prob < 0) return;
+    await db.products.update(id, { probability: prob });
     await loadProducts();
     setEditingProbability(null);
   }
@@ -138,16 +142,7 @@ export function Admin() {
               <span className="font-semibold text-gray-700">
                 Total Probability:{" "}
               </span>
-              <span
-                className={
-                  Math.abs(
-                    products.reduce((sum, p) => sum + (p.probability ?? 0), 0) -
-                      100
-                  ) < 0.01
-                    ? "text-green-600 font-bold"
-                    : "text-green-600 font-bold"
-                }
-              >
+              <span className="text-green-600 font-bold">
                 {products
                   .reduce((sum, p) => sum + (p.probability ?? 0), 0)
                   .toFixed(2)}
@@ -213,13 +208,13 @@ export function Admin() {
                       </h3>
 
                       {/* Quantity Management */}
-                      <div className="mb-3 md:mb-4">
+                      <div className="mb-4 md:mb-6">
                         <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                           Remaining Quantity
                         </label>
                         {editingQuantity?.id === product.id &&
                         editingQuantity ? (
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 items-stretch">
                             <input
                               type="number"
                               min="0"
@@ -227,10 +222,12 @@ export function Admin() {
                               onChange={(e) =>
                                 setEditingQuantity({
                                   id: product.id!,
-                                  value: Number(e.target.value),
+                                  value: e.target.value === "" ? "" : Number(e.target.value),
                                 })
                               }
-                              className="flex-1 px-2 md:px-3 py-1 md:py-2 text-sm md:text-base border-2 border-purple-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-300"
+                              // Automatically highlights the value on tablet/mobile focus so you can overwrite it instantly
+                              onFocus={(e) => e.target.select()}
+                              className="flex-1 px-4 py-3 text-lg md:text-xl font-bold border-2 border-purple-500 rounded-xl focus:outline-none focus:ring-4 focus:ring-purple-200 min-w-0"
                               autoFocus
                             />
                             <button
@@ -240,45 +237,46 @@ export function Admin() {
                                   editingQuantity.value
                                 )
                               }
-                              className="px-3 md:px-4 py-1 md:py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all text-sm md:text-base"
+                              className="px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition-all text-lg md:text-xl shadow-md active:scale-95"
                             >
                               ✓
                             </button>
                             <button
                               onClick={() => setEditingQuantity(null)}
-                              className="px-3 md:px-4 py-1 md:py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-semibold transition-all text-sm md:text-base"
+                              className="px-5 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-xl font-bold transition-all text-lg md:text-xl shadow-md active:scale-95"
                             >
                               ✕
                             </button>
                           </div>
                         ) : (
                           <div
-                            className="flex items-center justify-between px-3 md:px-4 py-2 md:py-3 bg-linear-to-r from-purple-100 to-pink-100 rounded-lg cursor-pointer hover:from-purple-200 hover:to-pink-200 transition-all"
+                            className="flex items-center justify-between px-4 py-3 md:py-4 bg-linear-to-r from-purple-100 to-pink-100 rounded-xl cursor-pointer hover:from-purple-200 hover:to-pink-200 transition-all shadow-xs"
                             onClick={() =>
                               setEditingQuantity({
                                 id: product.id!,
-                                value: product.remaining,
+                                // If current quantity is 0, start with clean empty string
+                                value: product.remaining === 0 ? "" : product.remaining,
                               })
                             }
                           >
                             <span className="text-2xl md:text-3xl font-bold text-purple-600">
                               {product.remaining}
                             </span>
-                            <button className="text-xs md:text-sm text-purple-600 hover:text-purple-800 font-semibold">
+                            <span className="text-xs md:text-sm text-purple-600 hover:text-purple-800 font-bold bg-white/80 px-3 py-1.5 rounded-lg shadow-2xs">
                               ✏️ Edit
-                            </button>
+                            </span>
                           </div>
                         )}
                       </div>
 
                       {/* Probability Management */}
-                      <div className="mb-3 md:mb-4">
+                      <div className="mb-4 md:mb-6">
                         <label className="block text-xs md:text-sm font-semibold text-gray-700 mb-2">
                           Probability (%)
                         </label>
                         {editingProbability?.id === product.id &&
                         editingProbability ? (
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 items-stretch">
                             <input
                               type="number"
                               min="0"
@@ -287,10 +285,12 @@ export function Admin() {
                               onChange={(e) =>
                                 setEditingProbability({
                                   id: product.id!,
-                                  value: Number(e.target.value),
+                                  value: e.target.value === "" ? "" : Number(e.target.value),
                                 })
                               }
-                              className="flex-1 px-2 md:px-3 py-1 md:py-2 text-sm md:text-base border-2 border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-300"
+                              // Automatically highlights the value on tablet/mobile focus so you can overwrite it instantly
+                              onFocus={(e) => e.target.select()}
+                              className="flex-1 px-4 py-3 text-lg md:text-xl font-bold border-2 border-pink-500 rounded-xl focus:outline-none focus:ring-4 focus:ring-pink-200 min-w-0"
                               autoFocus
                             />
                             <button
@@ -300,33 +300,34 @@ export function Admin() {
                                   editingProbability.value
                                 )
                               }
-                              className="px-3 md:px-4 py-1 md:py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold transition-all text-sm md:text-base"
+                              className="px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition-all text-lg md:text-xl shadow-md active:scale-95"
                             >
                               ✓
                             </button>
                             <button
                               onClick={() => setEditingProbability(null)}
-                              className="px-3 md:px-4 py-1 md:py-2 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-semibold transition-all text-sm md:text-base"
+                              className="px-5 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-xl font-bold transition-all text-lg md:text-xl shadow-md active:scale-95"
                             >
                               ✕
                             </button>
                           </div>
                         ) : (
                           <div
-                            className="flex items-center justify-between px-3 md:px-4 py-2 md:py-3 bg-linear-to-r from-pink-100 to-purple-100 rounded-lg cursor-pointer hover:from-pink-200 hover:to-purple-200 transition-all"
+                            className="flex items-center justify-between px-4 py-3 md:py-4 bg-linear-to-r from-pink-100 to-purple-100 rounded-xl cursor-pointer hover:from-pink-200 hover:to-purple-200 transition-all shadow-xs"
                             onClick={() =>
                               setEditingProbability({
                                 id: product.id!,
-                                value: product.probability ?? 0,
+                                // If current probability is 0, start with clean empty string
+                                value: (product.probability ?? 0) === 0 ? "" : (product.probability ?? 0),
                               })
                             }
                           >
                             <span className="text-xl md:text-2xl font-bold text-pink-600">
                               {product.probability?.toFixed(2) ?? "0.00"}%
                             </span>
-                            <button className="text-xs md:text-sm text-pink-600 hover:text-pink-800 font-semibold">
+                            <span className="text-xs md:text-sm text-pink-600 hover:text-pink-800 font-bold bg-white/80 px-3 py-1.5 rounded-lg shadow-2xs">
                               ✏️ Edit
-                            </button>
+                            </span>
                           </div>
                         )}
                       </div>

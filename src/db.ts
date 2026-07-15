@@ -22,7 +22,6 @@ export class SpinWheelDB extends Dexie {
       logs: '++id, productId, date',
       settings: 'key'
     }).upgrade(tx => {
-      // Set default probability to existing products
       return tx.table('products').toCollection().modify(product => {
         if (!product.probability) {
           product.probability = 12.5; // Default equal probability for 8 slots
@@ -36,10 +35,8 @@ export class SpinWheelDB extends Dexie {
       logs: '++id, productId, date',
       settings: 'key'
     }).upgrade(tx => {
-      // Generate uniqueKey for existing products based on name and index
       return tx.table('products').toCollection().modify((product, cursor) => {
         if (!product.uniqueKey) {
-          // Dexie cursor: use cursor.primaryKey for id
           const index = cursor && ('primaryKey' in cursor) ? cursor.primaryKey : undefined;
           product.uniqueKey = `product-${index}`;
         }
@@ -52,7 +49,6 @@ export class SpinWheelDB extends Dexie {
       logs: '++id, productId, date',
       settings: 'key'
     }).upgrade(tx => {
-      // Set default displayCount to 1 for existing products
       return tx.table('products').toCollection().modify(product => {
         if (!product.displayCount) {
           product.displayCount = 1;
@@ -75,10 +71,11 @@ export const db = new SpinWheelDB();
 export async function initializeProducts() {
   const existingProducts = await db.products.toArray();
   
-  // Filter out products without uniqueKey (old schema) and create map
+  // Filter out products with old legacy uniqueKeys (e.g., 'product-1')
+  // We only want to map keys that are in our new pure numerical string layout (e.g. "1", "2")
   const existingByKey = new Map(
     existingProducts
-      .filter(p => p.uniqueKey) // Only include products with uniqueKey
+      .filter(p => p.uniqueKey && !p.uniqueKey.startsWith('product-'))
       .map(p => [p.uniqueKey, p])
   );
   
@@ -89,10 +86,13 @@ export async function initializeProducts() {
     const existingProduct = existingByKey.get(codeProduct.uniqueKey);
     
     if (!existingProduct) {
-      // Product doesn't exist - add it
-      newProducts.push(codeProduct);
+      // If it doesn't match our active list, it's a new product
+      newProducts.push({
+        ...codeProduct,
+        id: Number(codeProduct.uniqueKey), // Sync uniqueKey string securely to Dexie numerical ID
+      });
     } else {
-      // Product exists - check if any field changed
+      // Product exists - check if any fields changed
       const needsUpdate = 
         existingProduct.name !== codeProduct.name ||
         existingProduct.image !== codeProduct.image ||
@@ -100,7 +100,6 @@ export async function initializeProducts() {
         existingProduct.probability !== codeProduct.probability;
       
       if (needsUpdate) {
-        // Update fields (preserve remaining quantity)
         await db.products.update(existingProduct.id!, {
           name: codeProduct.name,
           image: codeProduct.image,
@@ -112,43 +111,51 @@ export async function initializeProducts() {
     }
   }
   
-  // Delete old products without uniqueKey (from old schema)
-  const productsToDelete = existingProducts.filter(p => !p.uniqueKey);
+  // Clean up any legacy products left over from old schemas
+  const productsToDelete = existingProducts.filter(p => !p.uniqueKey || p.uniqueKey.startsWith('product-'));
   if (productsToDelete.length > 0) {
     for (const product of productsToDelete) {
       await db.products.delete(product.id!);
     }
-    console.log('🗑️ Removed', productsToDelete.length, 'old product(s) without uniqueKey');
+    console.log('🗑️ Cleaned up', productsToDelete.length, 'legacy products with old legacy keys.');
   }
   
-  // Add new products
+  // Add new products safely with their hard-mapped IDs
   if (newProducts.length > 0) {
     await db.products.bulkAdd(newProducts);
     console.log('✅ Added', newProducts.length, 'new product(s):', newProducts.map(p => p.name).join(', '));
   }
   
-  // Log updates
   if (updatedProducts.length > 0) {
     console.log('🔄 Updated', updatedProducts.length, 'product(s):', updatedProducts.join(', '));
   }
   
-  if (newProducts.length === 0 && updatedProducts.length === 0 && productsToDelete.length === 0) {
-    if (existingProducts.length === 0) {
-      // First time - add all products
-      await db.products.bulkAdd(INITIAL_PRODUCTS);
-      console.log('✅ Database initialized with', INITIAL_PRODUCTS.length, 'products');
-    } else {
-      console.log('✅ All products synced - no changes needed');
-    }
+  // First-time fallback
+  if (existingProducts.length === 0) {
+    const freshProducts = INITIAL_PRODUCTS.map(p => ({
+      ...p,
+      id: Number(p.uniqueKey)
+    }));
+    await db.products.bulkAdd(freshProducts);
+    console.log('✅ Database populated with fresh products');
   }
 }
 
-// Force reload products from initialProducts.ts (useful for development)
+// Force reload products from initialProducts.ts
 export async function reloadProducts() {
   await db.products.clear();
-  await db.products.bulkAdd(INITIAL_PRODUCTS);
-  console.log('Products reloaded from initialProducts.ts');
+  
+  // Map clean, unique numeric primary keys when inserting to prevent duplicate records
+  const freshProducts = INITIAL_PRODUCTS.map(p => ({
+    ...p,
+    id: Number(p.uniqueKey)
+  }));
+  
+  await db.products.bulkAdd(freshProducts);
+  console.log('Products reloaded cleanly from initialProducts.ts');
 }
 
-// Call initialization when database is ready
-initializeProducts();
+// Safe auto-initialization trigger
+initializeProducts().catch(err => {
+  console.error("Database sync failed on initialization:", err);
+});
