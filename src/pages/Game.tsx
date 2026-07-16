@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getAllActiveProducts } from "../spin";
 import type { Product } from "../types";
-import fondmBg from "../../public/FONDM.jpeg";
+import MazraaBg from "../assets/Mazraa-bg.jpeg";
 
 export function Game() {
   const navigate = useNavigate();
@@ -161,7 +161,7 @@ export function Game() {
     <div
       className="fixed inset-0 w-full h-full flex flex-col items-center justify-center overflow-hidden select-none touch-none"
       style={{
-        backgroundImage: `url(${fondmBg})`,
+        backgroundImage: `url(${MazraaBg})`,
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
