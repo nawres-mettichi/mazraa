@@ -160,7 +160,7 @@ export function Game() {
     <div
       className="fixed inset-0 w-full h-full flex flex-col items-center justify-center overflow-hidden select-none touch-none"
       style={{
-        backgroundImage: "url('/FONDM.jpeg')",
+        backgroundImage: "url('./FONDM.jpeg')",
         backgroundSize: '100% 100%',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center center',
@@ -423,5 +423,4 @@ export function Game() {
       )}
     </div>
   );
-
 }
