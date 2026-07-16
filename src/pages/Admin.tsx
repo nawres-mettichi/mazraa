@@ -90,7 +90,7 @@ export function Admin() {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-purple-50 p-4 md:p-6 lg:p-8 xl:p-10">
-      <div className="max-w-[1800px] mx-auto">
+      <div className="max-w-450 mx-auto">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl p-4 md:p-6 lg:p-8 mb-6 md:mb-8 border border-gray-100">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
